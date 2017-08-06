@@ -4,9 +4,9 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
-use GuzzleHttp\Client;
 
 
 class DefaultController extends Controller
@@ -25,13 +25,10 @@ class DefaultController extends Controller
     /**
      * @Route("/debugar",name="debugando")
      * @param Request $request
-     * @return null
      */
-    public function retriveData(Request $request){
-        $client= new Client();
-        $res=$client->get($this->getParameter('url'));
-        $profiler= new Profiler();
+    public function retriveData(Request $request,Profiler $profiler){
+        $res=Response::create($request->get('url'));
         $profiler->loadProfileFromResponse($res);
-        return null;
+        return $this->render('default/index.html.twig');
     }
 }
